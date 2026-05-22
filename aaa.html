@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Aşkımı Çok Seviyorum 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --gs-yellow: #FDB912;
+  --gs-yellow-dark: #d49500;
+  --gs-red: #A90432;
+  --gs-red-dark: #7a0021;
+  --dark-bg: #0d0d0d;
+  --dark-surface: #1a1a1a;
+  --dark-card: #262626;
+  --cream: #fdf6e2;
+  --text-dark: #fdf6e2;
+  --text-mid: rgba(253, 246, 226, 0.7);
+}
+
+body{
+  font-family: 'Nunito', -apple-system, sans-serif;
+  background: linear-gradient(135deg, #050505 0%, #151515 50%, #0a0a0a 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--text-dark);
+  padding-bottom: 200px;
+}
+
+.starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.star {
+  position: absolute; background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%; opacity: 0;
+  box-shadow: 0 0 4px rgba(253, 185, 18, 0.4);
+}
+.star.twinkle-1 { animation: twinkle1 ease-in-out infinite; }
+.star.twinkle-2 { animation: twinkle2 ease-in-out infinite; }
+@keyframes twinkle1 { 0%, 100% { opacity: 0.1; transform: scale(0.8); } 50% { opacity: 0.9; transform: scale(1.2); } }
+@keyframes twinkle2 { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.9); } }
+
+.shooting-star {
+  position: absolute; width: 3px; height: 3px; background: #fff;
+  border-radius: 50%; box-shadow: 0 0 6px 2px rgba(253, 185, 18, 0.5);
+  animation: shootingStarAnim linear forwards; z-index: 1;
+}
+.shooting-star::before {
+  content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+  right: 0; width: 120px; height: 1.5px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
+}
+@keyframes shootingStarAnim {
+  0% { transform: translateX(0) translateY(0) rotate(-45deg) scale(0); opacity: 0; }
+  5% { transform: translateX(-20px) translateY(20px) rotate(-45deg) scale(1); opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateX(-1000px) translateY(1000px) rotate(-45deg) scale(0.3); opacity: 0; }
+}
+
+#app{position:relative; z-index:1; display:flex; flex-direction:column; min-height:100vh;}
+
+header{text-align:center; padding:1.5rem 1rem 1rem; z-index: 10;}
+header h1{
+  font-family:'Playfair Display',serif; font-size:clamp(1.5rem,4vw,2.2rem);
+  color:var(--gs-yellow); letter-spacing:1px; text-shadow:0 2px 15px rgba(253,185,18,0.3);
+}
+header p{font-size:.9rem;color:var(--text-mid);margin-top:.3rem;font-style:italic}
+
+#progress-bar{width:min(300px,80vw);margin:0 auto 1.5rem;text-align:center; z-index: 10; position: relative;}
+#progress-track{height:6px;background:rgba(253,185,18,0.15);border-radius:3px;overflow:hidden;margin-top:.5rem}
+#progress-fill{height:100%;background:linear-gradient(90deg,var(--gs-red),var(--gs-yellow));border-radius:3px;width:0%;transition:width .5s ease}
+#progress-label{font-size:.8rem;color:var(--gs-yellow);font-weight:600; letter-spacing: 1px;}
+
+#stage{position:relative; flex: 1; width: 100%; min-height: 450px; margin: 0 auto;}
+
+.album-container {
+  position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%);
+  display: flex; justify-content: center; align-items: center; z-index: 5;
+}
+.album-glow {
+  position: absolute; width: 300px; height: 380px;
+  background: radial-gradient(ellipse at center, rgba(169, 4, 50, 0.25) 0%, rgba(253, 185, 18, 0.05) 40%, transparent 70%);
+  border-radius: 24px; filter: blur(35px); z-index: 0;
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+@keyframes pulse-glow { 0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
+.album-card {
+  position: relative; width: 260px; height: 340px;
+  background: linear-gradient(135deg, var(--dark-card) 0%, var(--dark-bg) 100%);
+  border-radius: 24px; padding: 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 0 40px rgba(253,185,18, 0.05);
+  z-index: 5; display: flex; flex-direction: column; justify-content: center; align-items: center;
+  border: 1px solid rgba(253,185,18, 0.15); backdrop-filter: blur(10px);
+  animation: float-card 6s ease-in-out infinite;
+}
+@keyframes float-card { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+.album-image {
+  width: 210px; height: 210px;
+  background: linear-gradient(135deg, var(--cream) 0%, #e8dcc8 100%);
+  border-radius: 16px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+  margin-bottom: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.5), inset -5px -5px 15px rgba(0, 0, 0, 0.05);
+  overflow: hidden; position: relative; color: var(--dark-bg);
+}
+.album-image img { width: 100%; height: 100%; object-fit: cover; }
+.album-title {
+  color: var(--gs-yellow); font-size: 14px; font-weight: 600; letter-spacing: 3px;
+  text-align: center; text-transform: uppercase; text-shadow: 0 2px 8px rgba(253,185,18, 0.3);
+}
+
+.balloon-wrap{
+  position:absolute; transform-origin:bottom center; cursor:pointer;
+  z-index:30; animation:sway 4s ease-in-out infinite; transition:transform 0.3s;
+}
+.balloon-wrap:hover{transform: scale(1.15) !important;}
+.balloon-wrap.popped{animation:popAnim .5s forwards !important;pointer-events:none}
+@keyframes sway{
+  0%,100%{transform:translateX(-50%) rotate(-4deg) translateY(0)}
+  50%{transform:translateX(-50%) rotate(4deg) translateY(-8px)}
+}
+@keyframes popAnim{
+  0%{transform:translateX(-50%) scale(1);opacity:1}
+  40%{transform:translateX(-50%) scale(1.4);opacity:.8}
+  100%{transform:translateX(-50%) scale(0) translateY(-40px);opacity:0}
+}
+.balloon-body{
+  width:min(55px,13vw); height:min(68px,16vw);
+  border-radius: 50% 50% 50% 50% / 55% 55% 45% 45%;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: inset -3px -2px 8px rgba(0,0,0,.4), 0 8px 20px rgba(0,0,0,.5);
+  font-size: clamp(1.1rem,3.5vw,1.6rem); line-height:1; position:relative;
+}
+.balloon-body::after{
+  content:''; width:8px; height:8px; background:rgba(255,255,255,.4); border-radius:50%; position:absolute; top:8px; left:10px;
+}
+.balloon-knot{
+  width:0; height:0; border-left:4px solid transparent; border-right:4px solid transparent;
+  border-top-width:8px; border-top-style:solid; margin:0 auto; opacity:0.9;
+}
+.balloon-string {
+  position: absolute; width: 1px; height: 120px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%);
+  left: 50%; transform: translateX(-50%); top: 100%; z-index: -1;
+}
+
+.b-red .balloon-body{background:linear-gradient(135deg, var(--gs-red) 0%, var(--gs-red-dark) 100%); color:var(--cream);}
+.b-red .balloon-knot{border-top-color:var(--gs-red-dark)}
+.b-yellow .balloon-body{background:linear-gradient(135deg, var(--gs-yellow) 0%, var(--gs-yellow-dark) 100%); color:var(--dark-bg); text-shadow:0 1px 2px rgba(255,255,255,0.3);}
+.b-yellow .balloon-knot{border-top-color:var(--gs-yellow-dark)}
+.b-black .balloon-body{background:linear-gradient(135deg, #333 0%, #0a0a0a 100%); color:var(--gs-yellow);}
+.b-black .balloon-knot{border-top-color:#0a0a0a}
+.b-cream .balloon-body{background:linear-gradient(135deg, var(--cream) 0%, #e8dcc8 100%); color:var(--gs-red);}
+.b-cream .balloon-knot{border-top-color:#e8dcc8}
+
+#cake-section{ display:none; flex-direction:column; align-items:center; gap:1.2rem; width:100%; margin:0 auto 2rem; padding:0 1rem; z-index: 10; position: relative;}
+#cake-section.visible{display:flex}
+#countdown-scene{ text-align:center; background:rgba(26,26,26,.8); border-radius:16px; padding:1rem 1.5rem; box-shadow:0 10px 30px rgba(0,0,0,.8), inset 0 0 0 1px rgba(253,185,18,.2); backdrop-filter:blur(15px); }
+#countdown-number{ font-family:'Playfair Display',serif; font-size:3rem; color:var(--gs-yellow); line-height:1; animation:pulse 1s ease-in-out infinite; text-shadow:0 0 20px rgba(253,185,18,.5); margin-bottom: 5px; }
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+#countdown-msg{font-size:.9rem;color:var(--cream);font-style:italic;}
+
+.cake{position:relative;width:min(220px,58vw);margin-top:60px}
+.candles-row{ display:flex;justify-content:center;align-items:flex-end; position:absolute;top:-58px;left:50%;transform:translateX(-50%); gap:4px; z-index:10; }
+.cake-candle{ width:12px;height:36px; border-radius:3px 3px 1px 1px; position:relative; box-shadow:inset -3px 0 6px rgba(0,0,0,.4); }
+.flame{ position:absolute;top:-18px;left:50%;transform:translateX(-50%); width:12px;height:20px; background:radial-gradient(ellipse at bottom,#fff 10%,#ffe000 40%,#ff9900 70%,rgba(255,100,0,.4) 100%); border-radius:50% 50% 30% 30%; animation:flicker .35s ease-in-out infinite alternate; transition:all .4s; z-index:31; }
+@keyframes flicker{from{transform:translateX(-50%) scaleY(1) scaleX(1)}to{transform:translateX(-50%) scaleY(1.15) scaleX(.9)}}
+.flame.out{opacity:0;transform:translateX(-50%) scaleY(0)}
+
+.cake-top{ background:linear-gradient(180deg,#333,#1a1a1a); height:55px; border-radius:8px 8px 0 0; position:relative; overflow:visible; }
+.cake-middle{ background:linear-gradient(180deg,var(--gs-red),var(--gs-red-dark)); height:58px; position:relative; }
+.cake-bottom{ background:linear-gradient(180deg,#1a1a1a,#000); height:65px; border-radius:0 0 10px 10px; box-shadow:0 15px 35px rgba(0,0,0,.9); position:relative; }
+.cake-layer-deco{ position:absolute;bottom:0;left:0;right:0;height:15px;overflow:hidden; }
+.cake-layer-deco svg{width:100%;height:15px}
+.cake-decoration{ position:absolute;inset:0;display:flex;align-items:center;justify-content:center; gap:8px; padding-top:5px; }
+.cake-dots{ position:absolute;bottom:6px;left:0;right:0; display:flex;justify-content:center;gap:10px; }
+.cake-dot{ width:6px;height:6px;border-radius:50%; background:var(--cream); box-shadow:0 0 5px rgba(253,246,226,.3); }
+
+#birthday-msg{ display:none; max-width:min(580px,92vw); margin:0 auto 5rem; padding:2.5rem 1.5rem 2rem; background:rgba(20,20,20,.8); border-radius:24px; box-shadow:0 15px 40px rgba(0,0,0,.8), inset 0 0 0 1px rgba(253,185,18,.2); text-align:center; animation:fadeInUp .8s ease forwards; backdrop-filter:blur(15px); }
+#birthday-msg.show{display:block}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+#birthday-msg h2{ font-family:'Playfair Display',serif; font-size:clamp(1.4rem,4.5vw,2.2rem); color:var(--gs-yellow); margin-bottom:1.2rem; text-shadow:0 2px 15px rgba(253,185,18,.3); }
+#birthday-msg p{font-size:1.05rem;color:var(--text-mid);line-height:1.8}
+#birthday-msg strong{color:var(--cream) !important; font-weight: 700;}
+
+#reset-btn{ display:none; margin:1rem auto 0; background:transparent; border:1px solid rgba(253,185,18,.4); color:var(--gs-yellow); border-radius:30px; padding:.7rem 2rem; font-size:.95rem; cursor:pointer; font-family:'Nunito',sans-serif; font-weight:600; transition:all .3s; z-index: 10; position: relative; }
+#reset-btn:hover{background:rgba(253,185,18,.1); transform:translateY(-2px);}
+#reset-btn.visible{display:block}
+
+/* ── MODAL ── */
+#modal-overlay{
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.85); z-index:1000;
+  align-items:center; justify-content:center;
+  padding:1rem; backdrop-filter:blur(8px);
+}
+#modal-overlay::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(253,185,18, 0.02) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(169,4,50, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 999;
+}
+#modal-overlay.open{display:flex}
+
+#modal-card{
+  background:linear-gradient(135deg, var(--dark-card) 0%, var(--dark-bg) 100%);
+  border-radius:24px;
+  width: min(360px, 92vw);
+  max-width: 92vw;
+  text-align:center;
+  box-shadow:0 25px 60px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.05), 0 0 40px rgba(253,185,18, 0.15);
+  position:relative;
+  animation:modalIn .4s cubic-bezier(.34,1.56,.64,1);
+  border:2px solid rgba(253,185,18,.3);
+  overflow: hidden;
+  z-index: 1001;
+}
+@keyframes modalIn{from{transform:scale(.8) translateY(20px);opacity:0}to{transform:scale(1);opacity:1}}
+
+#modal-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  background: 
+    radial-gradient(circle at 0% 0%, rgba(253,185,18, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(169,4,50, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#modal-header{
+  padding: 1.2rem 1.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  background: linear-gradient(180deg, rgba(253,185,18, 0.08) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(253,185,18, 0.15);
+  z-index: 2;
+}
+#modal-header::before,
+#modal-header::after {
+  content: '✨';
+  position: absolute;
+  color: var(--gs-yellow);
+  font-size: 1rem;
+  opacity: 0.6;
+}
+#modal-header::before { left: 15px; }
+#modal-header::after { right: 15px; }
+#modal-num{
+  font-family:'Playfair Display',serif;
+  font-size:2.2rem;
+  color:var(--gs-yellow);
+  text-shadow: 0 0 20px rgba(253,185,18, 0.4);
+  filter: drop-shadow(0 0 8px rgba(253,185,18, 0.3));
+  position: relative;
+  z-index: 3;
+}
+#modal-close{
+  background:rgba(253,185,18,.1); border:none; width:32px; height:32px;
+  border-radius:50%; font-size:1rem; cursor:pointer; color:var(--gs-yellow);
+  display:flex; align-items:center; justify-content:center; transition:background .2s;
+  flex-shrink: 0;
+  z-index: 3;
+  position: relative;
+}
+#modal-close:hover{background:rgba(253,185,18,.25)}
+
+/* Fotoğraf alanı */
+#modal-photo-area{ 
+  width: 100%; 
+  position: relative;
+  padding: 12px;
+  background: linear-gradient(135deg, rgba(253,185,18, 0.1) 0%, rgba(169,4,50, 0.05) 100%);
+  border-radius: 16px;
+  margin: 0.5rem 0;
+  z-index: 2;
+}
+#modal-photo-area::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  border: 2px solid rgba(253,185,18, 0.2);
+  box-shadow: inset 0 0 15px rgba(253,185,18, 0.05);
+  pointer-events: none;
+}
+#modal-img{
+  width: 100%;
+  display: block;
+  max-height: 60vw;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0, 0.5);
+  position: relative;
+  z-index: 1;
+}
+
+/* Metin / caption alanı */
+#modal-body{
+  padding: 1.2rem 1.5rem 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+#modal-body::before,
+#modal-body::after {
+  content: '✨  💝  ✨';
+  position: absolute;
+  font-size: 0.9rem;
+  color: var(--gs-yellow);
+  opacity: 0.5;
+  letter-spacing: 8px;
+  width: 100%;
+  text-align: center;
+}
+#modal-body::before {
+  top: 0;
+  left: 0;
+}
+#modal-body::after {
+  bottom: 0;
+  left: 0;
+}
+/* Fotoğraf caption: daha küçük, italik, altın rengi */
+#modal-caption{
+  font-size: .95rem;
+  color: var(--gs-yellow);
+  font-style: italic;
+  line-height: 1.6;
+  opacity: .9;
+  text-shadow: 0 0 10px rgba(253,185,18, 0.2);
+  position: relative;
+  z-index: 2;
+  margin: 0.5rem 0;
+  padding: 0 1rem;
+}
+/* Not metni: krem rengi, biraz büyük */
+#modal-text{
+  font-size:1.05rem;
+  color:var(--cream);
+  line-height:1.75;
+  font-style:italic;
+  position: relative;
+  z-index: 2;
+  margin: 0.5rem 0;
+  padding: 0 1rem;
+  text-shadow: 0 2px 8px rgba(0,0,0, 0.3);
+}
+#modal-heart{
+  font-size:2rem;
+  margin-top:1rem;
+  display:block;
+  text-shadow: 0 0 15px rgba(253,185,18, 0.5);
+  filter: drop-shadow(0 0 5px rgba(253,185,18, 0.4));
+}
+
+/* ── PLAYER BAR ── */
+.music-player {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  width: 92%; max-width: 450px; background: rgba(20, 20, 20, 0.85); backdrop-filter: blur(25px); 
+  border: 1px solid rgba(253,185,18, 0.2); border-radius: 20px; padding: 14px 20px; 
+  z-index: 500; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.player-info { text-align: center; margin-bottom: 8px; cursor: pointer; }
+.song-title { color: var(--gs-yellow); font-size: 14px; font-weight: 700; margin-bottom: 2px; letter-spacing: 0.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.artist-name { color: var(--text-mid); font-size: 11px; font-weight: 400; letter-spacing: 1px; }
+.progress-bar { width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; margin-bottom: 6px; cursor: pointer; position: relative; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--gs-red), var(--gs-yellow)); width: 0%; border-radius: 2px; transition: width 0.1s linear; box-shadow: 0 0 10px rgba(253,185,18, 0.4); pointer-events: none; }
+.time-display { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 10px; color: var(--text-mid); letter-spacing: 0.5px; font-weight: 600; }
+.player-controls { display: flex; justify-content: center; align-items: center; gap: 15px; }
+.control-btn { background: none; border: 1px solid rgba(255, 255, 255, 0.2); color: var(--cream); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 14px; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.control-btn:hover { background: rgba(253,185,18, 0.15); border-color: var(--gs-yellow); color: var(--gs-yellow); transform: scale(1.1); }
+.play-btn { width: 46px; height: 46px; background: linear-gradient(135deg, var(--gs-yellow) 0%, var(--gs-yellow-dark) 100%); border: none; color: var(--dark-bg); font-size: 18px; padding-left:3px; box-shadow: 0 8px 20px rgba(253,185,18, 0.3), inset -2px -2px 5px rgba(255, 255, 255, 0.3); }
+.play-btn:hover { background: linear-gradient(135deg, #ffd050 0%, var(--gs-yellow) 100%); transform: translateY(-2px) scale(1.05); color: var(--dark-bg); }
+.playlist-btn-icon { font-size: 13px; }
+
+#playlist-drawer{ position:fixed; bottom:90px; left:0; right:0; z-index:499; max-height:0; overflow:hidden; transition:max-height .45s cubic-bezier(.4,0,.2,1); }
+#playlist-drawer.open{max-height:450px}
+.playlist-inner{ max-width:600px; margin:0 auto; background:rgba(20,20,20,0.95); border-radius:24px 24px 0 0; border:1px solid rgba(253,185,18,.2); border-bottom:none; backdrop-filter:blur(20px); box-shadow:0 -10px 40px rgba(0,0,0,.8); overflow-y:auto; max-height:450px; padding:1.5rem 1rem 1rem; }
+.playlist-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem; padding:0 .5rem;}
+.playlist-header h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--gs-yellow)}
+.playlist-header button{background:rgba(253,185,18,.1); border-radius:50%; width:30px; height:30px; border:none; font-size:1rem; cursor:pointer; color:var(--gs-yellow)}
+.song-row{ display:grid;grid-template-columns:2rem 1fr; align-items:center; gap:.8rem; padding:.7rem .5rem; border-radius:12px; cursor:pointer; transition:background .2s; border-bottom:1px solid rgba(255,255,255,.05); }
+.song-row:last-child{border-bottom:none}
+.song-row:hover{background:rgba(255,255,255,.05)}
+.song-row.active{background:rgba(253,185,18,.15); border:1px solid rgba(253,185,18,.2);}
+.song-row.active .sr-name{color:var(--gs-yellow)}
+.sr-num{font-size:.8rem;color:rgba(255,255,255,.4);font-weight:700;text-align:center;}
+.sr-num.playing::before{content:'▶';color:var(--gs-yellow);font-size:.8rem}
+.sr-info{min-width:0}
+.sr-name{font-size:.9rem;font-weight:700;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-artist{font-size:.75rem;color:var(--text-mid)}
+.sr-file-info{font-size:.7rem;color:#7eb8f0;margin-top:2px}
+.sr-file-warn{font-size:.7rem;color:var(--gs-red);margin-top:2px}
+.sr-actions{display:flex;gap:.3rem;align-items:center}
+
+
+@media(max-width:480px){
+  header h1 { font-size: 1.6rem; }
+  .album-card { width: 230px; height: 310px; padding: 20px; }
+  .album-glow { width: 260px; height: 350px; }
+  .album-image { width: 180px; height: 180px; }
+  .balloon-body{ font-size:1.1rem; width:45px; height:58px;}
+  #modal-img { max-height: 55vw; }
+}
+</style>
+</head>
+<body>
+
+<div class="starfield" id="starfield"></div>
+
+<div id="app">
+  <header>
+    <h1>Sevgilime Özel Bir Gün</h1>
+    <p>Her balonun içinde sana bir sürpriz saklı...</p>
+  </header>
+
+  <div id="progress-bar">
+    <div id="progress-label">0 / 24 balon patlatıldı</div>
+    <div id="progress-track"><div id="progress-fill"></div></div>
+  </div>
+
+  <div id="stage">
+    <div class="album-container" id="photo-frame-wrap">
+        <div class="album-glow"></div>
+        <div class="album-card">
+            <div class="album-image" id="couple-photo">
+                <img src="enesR/yanyana.jpeg" alt="Birlikte">
+            </div>
+            <div class="album-title">24. Yaşa Hoş Geldin Sevgilim</div>
+        </div>
+    </div>
+  </div>
+
+  <div id="cake-section">
+    <div id="countdown-scene" style="display:none">
+      <div id="countdown-number"></div>
+      <div id="countdown-msg"></div>
+    </div>
+    <div class="cake" id="theCake" style="display:none">
+        <div class="candles-row" id="candlesRow"></div>
+        <div class="cake-top">
+          <div class="cake-layer-deco"><svg viewBox="0 0 200 15" preserveAspectRatio="none"><path d="M0 8 Q20 0 40 8 Q60 15 80 8 Q100 0 120 8 Q140 15 160 8 Q180 0 200 8 L200 15 L0 15 Z" fill="rgba(255,255,255,0.05)"/></svg></div>
+        </div>
+        <div class="cake-middle">
+          <div class="cake-layer-deco"><svg viewBox="0 0 200 15" preserveAspectRatio="none"><path d="M0 8 Q20 0 40 8 Q60 15 80 8 Q100 0 120 8 Q140 15 160 8 Q180 0 200 8 L200 15 L0 15 Z" fill="rgba(0,0,0,0.2)"/></svg></div>
+          <div class="cake-decoration">
+            <span style="font-size:.9rem">✨</span>
+            <span style="font-family:'Playfair Display',serif;font-size:.85rem;color:#fff;font-style:italic;font-weight:700;">İyi ki Doğdun</span>
+            <span style="font-size:.9rem">✨</span>
+          </div>
+          <div class="cake-dots"><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div></div>
+        </div>
+        <div class="cake-bottom">
+          <div class="cake-layer-deco"><svg viewBox="0 0 200 15" preserveAspectRatio="none"><path d="M0 8 Q20 0 40 8 Q60 15 80 8 Q100 0 120 8 Q140 15 160 8 Q180 0 200 8 L200 15 L0 15 Z" fill="rgba(253,185,18,0.1)"/></svg></div>
+          <div class="cake-dots" style="bottom:10px">
+            <div class="cake-dot" style="background:var(--gs-yellow)"></div><div class="cake-dot" style="background:var(--gs-yellow)"></div><div class="cake-dot" style="background:var(--gs-yellow)"></div><div class="cake-dot" style="background:var(--gs-yellow)"></div><div class="cake-dot" style="background:var(--gs-yellow)"></div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div id="birthday-msg">
+    <h2>Aşkımm, Mutlu Yıllar!</h2>
+    <p>
+      Benim aşkım, canımın içi sevgilim 💖 Bugün en güzel günlerden biri aşkım çünkü benim aşkım bugün doğmuş 💕 İyi ki dünyaya gelmişsin, iyi ki yollarımız kesişmiş, iyi ki hayatıma girmişsin aşkım. Doğum günün kutlu olsun sevgilim 💞 Seninle tanıştıktan sonra hayata, geleceğe çok daha umutla bakmaya başladım aşkım ✨ Yeni yaşın sana bolca huzur, mutluluk ve sağlık getirsin birtanem 💖 Seninle geçen her an benim için o kadar kıymetli ki aşkım 💕 Hayatın getirdiği tüm zorluklarda da güzelliklerde de hep yan yana olalım sevgilim 🤍 El ele, omuz omuza, birbirimize sımsıkı tutunarak 💞 Gelecekteki tüm yaşlarını,yaşlarımızı birlikte karşılayalım aşkım 🎂 Seninle bir ömür yürümeyi, elini hiç bırakmamayı o kadar çok istiyorum ki aşkım 💌 Çünkü ben kalbimi, huzurumu sende buldum aşkım ❤️ Senin sevgin bana güç veriyor, içimi huzurla dolduruyor sevgilim ❤️‍🩹 İyi ki varsın sevgilim, iyi ki benim hayatımdasın 💖 Doğum günün kutlu olsun aşkım 🎂🎈 <strong>Seni çok ama çok seviyorum canımın içi 💞</strong>
+    </p>
+    <button id="reset-btn" onclick="resetAll()" style="margin-top:1.5rem;">🔄 Baştan Başlayalım</button>
+  </div>
+  <audio id="audio-player" preload="none"></audio>
+</div>
+
+<!-- MODAL -->
+<div id="modal-overlay" onclick="closeModal(event)">
+  <div id="modal-card">
+    <div id="modal-header">
+      <div id="modal-num"></div>
+      <button id="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modal-photo-area">
+      <img id="modal-img" alt="" style="display:none">
+    </div>
+    <div id="modal-body">
+      <div id="modal-caption" style="display:none"></div>
+      <div id="modal-text" style="display:none"></div>
+      <span id="modal-heart">✨</span>
+    </div>
+  </div>
+</div>
+
+<div class="music-player" id="player-bar">
+    <div class="player-info" id="player-song-info" onclick="togglePlaylist()" title="Çalma listesini aç">
+        <div class="song-title" id="player-song-name">🎵 Bizim Şarkılarımız</div>
+        <div class="artist-name" id="player-song-artist">Şarkıya MP3 ekle, sonra çal</div>
+    </div>
+    <div class="progress-bar" id="player-progress">
+        <div class="progress-fill" id="player-progress-fill"></div>
+    </div>
+    <div class="time-display">
+        <span id="player-time-cur">0:00</span>
+        <span id="player-time-tot">0:00</span>
+    </div>
+    <div class="player-controls">
+        <button class="control-btn" id="player-prev-btn" title="Önceki" onclick="playerPrev()">⏮</button>
+        <button class="control-btn play-btn" id="player-play-btn" title="Oynat/Duraklat" onclick="playerToggle()">▶</button>
+        <button class="control-btn" id="player-next-btn" title="Sonraki" onclick="playerNext()">⏭</button>
+        <button class="control-btn playlist-btn-icon" id="player-playlist-btn" title="Çalma Listesi" onclick="togglePlaylist()">🎵</button>
+    </div>
+</div>
+
+<div id="playlist-drawer">
+  <div class="playlist-inner">
+    <div class="playlist-header">
+      <h3>🎵 Bizim Çalma Listemiz</h3>
+      <button onclick="togglePlaylist()">✕</button>
+    </div>
+    <div id="song-list"></div>
+  </div>
+</div>
+
+<script>
+const balloonIcons = ['❤', '⭐', '🌙', '✨', '💫', '🎉', '🌟', '💝'];
+
+const balloonContents = [
+  {type:'note',    text:'Yıllar bizi birlikte yaşlandırsın sevgilim.. 🤍'},
+  {type:'photo',   src:'enesR/batum.png',     caption:'Hayallerimizin bir gün güzel anılara dönüşmesi dileğiyle sevgilim. 🌊'},
+  {type:'note',    text:'Sana dair iyi ki dediğim bir çok an var sevgilim ve bugün O anlardan en önemlisi! iyi ki doğdun aşkımm  🌅'},
+  {type:'photo',   src:'enesR/karadeniz.png', caption:'Hayallerimizin bir gün güzel anılara dönüşmesi dileğiyle aşkım. 🌿'},
+  {type:'note',    text:'hayatımda olduğun için dünya daha renkli, sesler daha tatlı, hayat daha anlamlı kalbimm. ✨'},
+  {type:'note',    text:'Seninle her yer ev gibi hissettiriyor bir tanem. 🏠🤍'},
+  {type:'photo',   src:'enesR/sinema.png',    caption:'Hayallerimizin bir gün güzel anılara dönüşmesi dileğiyle hayatım. 🎬'},
+  {type:'note',    text:'Sana her şeyi anlatabiliyorum aşkım çünkü sen benim en güvenli limanımsın. ⚓'},
+  {type:'note',    text:'Hayatıma girdiğin için teşekkür ederim aşkıımm. 🍀'},
+  {type:'photo',   src:'enesR/yemek.png',     caption:'Hayallerimizin bir gün güzel anılara dönüşmesi dileğiyle canımın içi. ☕'},
+  {type:'note',    text:'Her sabah seni görmek için gözlerimi açmak istiyorum canımın içi. Sonsuza dek. ☀️'},
+  {type:'note',    text:'Tesadüf\'müsün yoksa şans\'mısın, yoksa kader mi bilmem ama Bu dünya\'da bana iyi gelen her şeysin ✨'},
+  {type:'photo',   src:'enesR/günbatımı.png', caption:'Hayallerimizin bir gün güzel anılara dönüşmesi dileğiyle bir tanem. 🌅'},
+  {type:'note',    text:'Seninle paylaştığım sıradan anlar bile benim için çok kıymetli hayatım. 💎'},
+  {type:'note',    text:'Bu dünyada seni bulmak... en büyük şansım ve mucizem sevgilim. 🌟'},
+  {type:'photo',   src:'enesR/yürüyüş.png',   caption:'Hayallerimizin bir gün güzel anılara dönüşmesi dileğiyle iyi ki\'m 🍂'},
+  {type:'note',    text:'Gelecekte yaşlanıp da geriye baktığımızda, seninle geçirilen bu günlere birlikte gülümseyeceğiz iyi ki\'m. 👴👵'},
+  {type:'note',    text:'Kalbim seni seçti, aklım seni buldu, ruhum sende huzur buldu canımın içi. 🕊️'},
+  {type:'photo',   src:'enesR/yıldız.png',    caption:'Hayallerimizin bir gün güzel anılara dönüşmesi dileğiyle kalbim. ✨'},
+  {type:'note',    text:'Dünya dönmeye devam ettiği sürece seni sevmeye devam edeceğim aşkım 🌍🤍'},
+  {type:'note',    text:'İyi ki o gün yollarımız kesişmiş sevgilim . 💌'},
+  {type:'photo',   src:'enesR/bungalov.png',  caption:'Hayallerimizin bir gün güzel anılara dönüşmesi dileğiyle kalbim. 🤍'},
+  {type:'note',    text:'Bugün doğum gününü kutlarken aslında hayatıma kattıklarını da kutluyorum aşkıım. Mutlu yıllar hayatım! 🎂'},
+  {type:'note',    text:'Tüm kalbimle seninleyim aşkım ve hep yanındayım. Seni seviyorum canımın içi 🤍🎉'},
+];
+
+const countdownMessages={
+  10:'10... Hazır mısın aşkım? 🎂',9:'9... Nefes al, gözlerini kapat... 💨',
+  8:'8... Pastaya bak, ne kadar güzel! ✨',7:'7... Bir dilek tut, ne dilersen tut! 🌟',
+  6:'6... Hepsini düşündün mü? 💭',5:'5... Neredeyse! 🤍',
+  4:'4... Hazır ol... ⏳',3:'3... Az kaldı! 😍',
+  2:'2... Derin bir nefes al... 💨',1:'1... Üfle aşkım, ÜFLE! 🌬️',
+  0:'🎉 İyi ki doğdun! 🎉',
+};
+
+const songs=[
+  {name:'Aşkın Olayım',artist:'Simge', url:'enesM/Aşkın Olayım.mp3'},
+  {name:'Aşk',artist:'Gökhan Türkmen', url:'enesM/Aşk [Official Video] - Gökhan Türkmen %23Aşk.mp3'},
+  {name:'Dolu Kadehi Ters Tut',artist:'Dilerim Ki', url:'enesM/Dolu Kadehi Ters Tut - Dilerim Ki (Official Audio).mp3'},
+  {name:'Aylardan Mayıs',artist:'Göksel İpekçi', url:'enesM/Göksel İpekçi - aylardan Mayıs.mp3'},
+  {name:'Yanında Uyansam',artist:'Kaldı 8', url:'enesM/Kaldı 8 - Yanında Uyansam.mp3'},
+  {name:'Sen Benim Başıma Gelen En Güzel Şey',artist:'Koyu', url:'enesM/Koyu - Sen Benim Başıma Gelen En Güzel Şey (Official Lyric Video).mp3'},
+  {name:'Bi Tek Ben Anlarım',artist:'KÖFN', url:'enesM/KÖFN - Bi Tek Ben Anlarım - (Official Video).mp3'},
+  {name:'Sen - Ben Anılarım',artist:'Mavi Gri', url:'enesM/Mavi Gri - Sen - Ben Anılarım (SözleriLyrics).mp3'},
+  {name:'Kısa Mesafe',artist:'Rafat Hasanlı', url:'enesM/Rafat Hasanlı - Kısa Mesafe.mp3'},
+  {name:'Senin Gibisini Bulamam',artist:'Rafat Hasanlı', url:'enesM/Rafat Hasanlı - Senin Gibisini Bulamam.mp3'},
+  {name:'Hoş Geldin',artist:'Sezen Aksu', url:'enesM/Sezen Aksu - Hoş Geldin (Lyrics  Şarkı Sözleri).mp3'},
+  {name:'Birden Geldin Aklıma',artist:'Tuna Kiremitçi', url:'enesM/Tuna Kiremitçi & Sena Şener - Birden Geldin Aklıma (Tuna Kiremitçi ve Arkadaşları).mp3'},
+  {name:'Her Şey Sensin',artist:'Yalın', url:'enesM/Yalın - Her Şey Sensin (Official Video).mp3'},
+  {name:'Kaybolurum Gülüşünde',artist:'İkilem', url:'enesM/İkilem - Kaybolurum Gülüşünde (Official Video).mp3'},
+];
+
+const TOTAL = 24;
+const colorClasses = ['b-red', 'b-yellow', 'b-black', 'b-cream'];
+let poppedCount = 0;
+let currentIndex = -1, isPlaying = false;
+const audio = document.getElementById('audio-player');
+window.poppedBalloons = new Set();
+
+// ─── YILDIZLAR ───
+function createStarfield() {
+  const starfield = document.getElementById('starfield');
+  starfield.innerHTML = '';
+  for (let i = 0; i < 120; i++) {
+    const star = document.createElement('div');
+    star.className = 'star ' + (Math.random() > 0.5 ? 'twinkle-1' : 'twinkle-2');
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top  = Math.random() * 100 + '%';
+    star.style.animationDelay    = Math.random() * 5 + 's';
+    star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    const size = (0.5 + Math.random() * 2) + 'px';
+    star.style.width = size; star.style.height = size;
+    starfield.appendChild(star);
+  }
+  setInterval(spawnShootingStar, 1500);
+}
+
+function spawnShootingStar() {
+  if (Math.random() > 0.7) return;
+  const starfield = document.getElementById('starfield');
+  const s = document.createElement('div');
+  s.className = 'shooting-star';
+  const region = Math.floor(Math.random() * 3);
+  let startX, startY;
+  if (region === 0)      { startX = Math.random() * 50 + 50; startY = Math.random() * -20; }
+  else if (region === 1) { startX = Math.random() * 100;     startY = Math.random() * -10; }
+  else                   { startX = 100 + Math.random() * 10; startY = Math.random() * 50; }
+  s.style.left = startX + '%'; s.style.top = startY + '%';
+  const dur = 0.8 + Math.random() * 1.7;
+  s.style.animationDuration = dur + 's';
+  starfield.appendChild(s);
+  setTimeout(() => s.remove(), dur * 1000 + 500);
+}
+
+// ─── BALONLAR ───
+function buildBalloons() {
+  const stage = document.getElementById('stage');
+  stage.querySelectorAll('.balloon-wrap').forEach(b => b.remove());
+  const positions = [];
+  const minDist = 13;
+  for (let i = 0; i < TOTAL; i++) {
+    if (window.poppedBalloons.has(i)) continue;
+    const color = colorClasses[i % colorClasses.length];
+    const delay = (Math.random() * 3).toFixed(2);
+    const icon  = balloonIcons[i % balloonIcons.length];
+    let x, y, valid = false, attempts = 0;
+    while (!valid && attempts < 150) {
+      x = Math.random() * 86 + 7;
+      y = Math.random() * 70 + 5;
+      if (x > 32 && x < 68 && y > 25 && y < 65) { attempts++; continue; }
+      let overlap = false;
+      for (let p of positions) {
+        const dx = x - p.x, dy = y - p.y;
+        if (Math.sqrt(dx*dx + dy*dy) < minDist) { overlap = true; break; }
+      }
+      if (!overlap) valid = true;
+      attempts++;
+    }
+    positions.push({x, y});
+    const wrap = document.createElement('div');
+    wrap.className = `balloon-wrap ${color}`;
+    wrap.id = 'balloon-' + i;
+    wrap.style.cssText = `left:${x}%; top:${y}%; animation-delay:-${delay}s;`;
+    wrap.innerHTML = `<div class="balloon-body">${icon}</div><div class="balloon-knot"></div><div class="balloon-string"></div>`;
+    wrap.addEventListener('click', () => popBalloon(i));
+    stage.appendChild(wrap);
+  }
+}
+
+function popBalloon(index) {
+  const wrap = document.getElementById('balloon-' + index);
+  if (!wrap || wrap.classList.contains('popped')) return;
+  wrap.classList.add('popped');
+  window.poppedBalloons.add(index);
+  poppedCount++;
+  updateProgress();
+  showModal(index);
+  if (poppedCount === TOTAL) setTimeout(startCakeSequence, 900);
+}
+
+function updateProgress() {
+  document.getElementById('progress-label').textContent = `${poppedCount} / ${TOTAL} balon patlatıldı`;
+  document.getElementById('progress-fill').style.width  = `${(poppedCount / TOTAL) * 100}%`;
+}
+
+// ─── MODAL ───
+function showModal(index) {
+  const content = balloonContents[index];
+  const icon    = balloonIcons[index % balloonIcons.length];
+
+  document.getElementById('modal-num').textContent = `${icon}`;
+
+  const img     = document.getElementById('modal-img');
+  const caption = document.getElementById('modal-caption');
+  const text    = document.getElementById('modal-text');
+  const heart   = document.getElementById('modal-heart');
+
+  // Sıfırla
+  img.style.display     = 'none';
+  img.src               = '';
+  caption.style.display = 'none';
+  caption.textContent   = '';
+  text.style.display    = 'none';
+  text.textContent      = '';
+
+  if (content.type === 'photo') {
+    // Fotoğraf
+    img.src           = content.src;
+    img.style.display = 'block';
+    // Caption
+    if (content.caption) {
+      caption.textContent   = content.caption;
+      caption.style.display = 'block';
+    }
+    heart.textContent = '📸';
+  } else {
+    // Not
+    text.textContent   = content.text;
+    text.style.display = 'block';
+    heart.textContent  = '✨';
+  }
+
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal-overlay') || e.currentTarget === document.getElementById('modal-close'))
+    document.getElementById('modal-overlay').classList.remove('open');
+}
+
+// ─── PASTA ───
+function startCakeSequence() {
+  document.getElementById('photo-frame-wrap').style.display = 'none';
+  document.getElementById('stage').style.display = 'none';
+  const cakeSection = document.getElementById('cake-section');
+  cakeSection.classList.add('visible');
+  const cdScene = document.getElementById('countdown-scene');
+  cdScene.style.display = 'block';
+  document.getElementById('countdown-number').textContent = '';
+  document.getElementById('countdown-msg').textContent = "Aşkım, pastamızı üflemek için 10'dan geriye sayalım! ✨";
+  cakeSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => { document.getElementById('theCake').style.display = 'block'; buildCandles(); runCountdown(10); }, 2500);
+}
+
+function buildCandles() {
+  const row = document.getElementById('candlesRow');
+  row.innerHTML = '';
+  for (let i = 0; i < 6; i++) {
+    const c  = document.createElement('div');
+    c.className = 'cake-candle'; c.id = 'candle-' + i; c.style.background = '#fdf6e2';
+    const fl = document.createElement('div'); fl.className = 'flame'; fl.id = 'flame-' + i;
+    c.appendChild(fl); row.appendChild(c);
+  }
+}
+
+function runCountdown(n) {
+  document.getElementById('countdown-number').textContent = n > 0 ? n : '';
+  document.getElementById('countdown-msg').textContent    = countdownMessages[n] || '';
+  if (n === 0) { setTimeout(blowOutCandles, 700); return; }
+  setTimeout(() => runCountdown(n - 1), 1000);
+}
+
+function blowOutCandles() {
+  for (let i = 0; i < 6; i++) {
+    setTimeout(() => { const f = document.getElementById('flame-' + i); if (f) f.classList.add('out'); }, i * 180);
+  }
+  setTimeout(() => {
+    launchConfetti();
+    document.getElementById('cake-section').classList.remove('visible');
+    document.getElementById('birthday-msg').classList.add('show');
+    document.getElementById('reset-btn').classList.add('visible');
+    setTimeout(() => document.getElementById('birthday-msg').scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
+  }, 1400);
+}
+
+function launchConfetti() {
+  const colors = ['#FDB912', '#A90432', '#fdf6e2', '#d49500'];
+  for (let i = 0; i < 120; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.style.cssText = `position:fixed;top:-20px;pointer-events:none;z-index:9999;left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};width:${5+Math.random()*8}px;height:${5+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'3px'};`;
+      const dur = 2 + Math.random() * 2;
+      const angle = Math.random() * Math.PI * 2;
+      const vel   = 2 + Math.random() * 4;
+      el.animate([
+        { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+        { transform: `translate(${Math.cos(angle)*vel*50}px,${window.innerHeight+50}px) rotate(720deg)`, opacity: 0 }
+      ], { duration: dur * 1000, easing: 'cubic-bezier(0.25,0.46,0.45,0.94)' });
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), dur * 1000 + 100);
+    }, i * 25);
+  }
+}
+
+function resetAll() {
+  poppedCount = 0;
+  window.poppedBalloons.clear();
+  document.getElementById('photo-frame-wrap').style.display = '';
+  document.getElementById('stage').style.display = '';
+  const cs = document.getElementById('cake-section'); cs.classList.remove('visible');
+  document.getElementById('theCake').style.display = 'none';
+  document.getElementById('countdown-scene').style.display = 'none';
+  document.getElementById('birthday-msg').classList.remove('show');
+  document.getElementById('reset-btn').classList.remove('visible');
+  updateProgress(); buildBalloons(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── MÜZİK ÇALAR ───
+function initPlayer() {
+  document.getElementById('player-progress').addEventListener('click', function(e) {
+    if (!audio.duration) return;
+    const rect = this.getBoundingClientRect();
+    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+  });
+  audio.addEventListener('timeupdate', onTimeUpdate);
+  audio.addEventListener('ended', onEnded);
+  audio.addEventListener('loadedmetadata', onMeta);
+  audio.volume = 0.8;
+  buildSongList();
+}
+
+function buildSongList() {
+  const list = document.getElementById('song-list'); if (!list) return; list.innerHTML = '';
+  songs.forEach((song, i) => {
+    const row  = document.createElement('div');
+    row.className = 'song-row' + (i === currentIndex ? ' active' : ''); row.id = 'song-row-' + i;
+    const isNow = i === currentIndex;
+    row.innerHTML = `
+      <div class="sr-num ${isNow ? 'playing' : ''}" id="sr-num-${i}">${isNow ? '' : i + 1}</div>
+      <div class="sr-info" onclick="playSong(${i})">
+        <div class="sr-name">${song.name}</div>
+        <div class="sr-artist">${song.artist || 'Sanatçı bilinmiyor'}</div>
+        ${song.url ? `<div class="sr-file-info">✓ ${song.url.split('/').pop()}</div>` : (song.file ? `<div class="sr-file-info">✓ ${song.file.name}</div>` : '<div class="sr-file-warn">⚠ MP3 eklenmedi — Düzenle\'ye bas</div>')}
+      </div>
+`;
+    list.appendChild(row);
+  });
+}
+
+
+
+function playSong(i) {
+  if (!songs[i].url) { alert('Bu şarkı için henüz MP3 dosyası eklenmedi.\nDüzenle butonuna basıp MP3 yükle!'); return; }
+  currentIndex = i; audio.src = songs[i].url;
+  audio.play().then(() => { isPlaying = true; updatePlayerBar(); buildSongList(); }).catch(e => console.warn('Hata:', e));
+}
+
+function playerToggle() {
+  if (currentIndex < 0) { const f = songs.findIndex(s => s.url); if (f < 0) { alert('Önce bir şarkıya MP3 dosyası ekle!'); return; } playSong(f); return; }
+  if (isPlaying) { audio.pause(); isPlaying = false; } else { audio.play(); isPlaying = true; }
+  updatePlayerBar();
+}
+function playerPrev() {
+  if (!songs.length) return;
+  let idx = currentIndex <= 0 ? songs.length - 1 : currentIndex - 1;
+  for (let n = 0; n < songs.length; n++) { if (songs[idx].url) break; idx = idx <= 0 ? songs.length - 1 : idx - 1; }
+  playSong(idx);
+}
+function playerNext() {
+  if (!songs.length) return;
+  let idx = (currentIndex + 1) % songs.length;
+  for (let n = 0; n < songs.length; n++) { if (songs[idx].url) break; idx = (idx + 1) % songs.length; }
+  playSong(idx);
+}
+function onTimeUpdate() {
+  if (!audio.duration) return;
+  document.getElementById('player-progress-fill').style.width = (audio.currentTime / audio.duration * 100) + '%';
+  document.getElementById('player-time-cur').textContent = fmtTime(audio.currentTime);
+}
+function onMeta()  { document.getElementById('player-time-tot').textContent = fmtTime(audio.duration); }
+function onEnded() { isPlaying = false; playerNext(); }
+function fmtTime(s) {
+  if (!s || isNaN(s)) return '0:00';
+  const m = Math.floor(s / 60), sec = Math.floor(s % 60).toString().padStart(2, '0');
+  return `${m}:${sec}`;
+}
+function updatePlayerBar() {
+  const song = songs[currentIndex];
+  document.getElementById('player-song-name').textContent   = song ? song.name : '🎵 Bizim Şarkılarımız';
+  document.getElementById('player-song-artist').textContent = song ? (song.artist || '') : 'Şarkıya MP3 ekle, sonra çal';
+  document.getElementById('player-play-btn').textContent    = isPlaying ? '⏸' : '▶';
+}
+function togglePlaylist() { document.getElementById('playlist-drawer').classList.toggle('open'); }
+
+window.addEventListener('DOMContentLoaded', () => {
+  createStarfield(); buildBalloons(); initPlayer();
+  window.addEventListener('resize', () => {
+    if (window.poppedBalloons.size === 0) buildBalloons();
+  });
+});
+</script>
+</body>
+</html>
